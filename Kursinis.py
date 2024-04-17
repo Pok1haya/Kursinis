@@ -14,11 +14,11 @@
 import cmd
 import random
 
-class SheetImporter:
+class SheetEditor:
     
     @staticmethod
     def import_sheet(importedSheetName):
-        print("Importing importedSheetName:", importedSheetName, "\n")
+        print(f"Importing:, {importedSheetName}\n")
         try:
             with open(importedSheetName, 'r') as file:
                 for line in file:
@@ -28,7 +28,20 @@ class SheetImporter:
             print("File not found.")
         except Exception as e:
             print("An error occurred:", e)
-
+    
+    def create_sheet(newSheetName):
+        print(f"Creating: {newSheetName}\n")
+        with open(newSheetName, 'w') as file:
+            print("Let's put in some date\n")
+            file.write(input("Enter Name: \n") + "\n")
+            file.write(input("Enter Class: \n") + "\n")
+            file.write(input("Enter Statistics: \n") + "\n")
+            file.write(input("Enter Health: \n") + "\n")
+            file.write(input("Enter Inventory content: \n") + "\n")
+            file.write(input("Enter Abilities: \n") + "\n")
+            file.write(input("Enter History: \n") + "\n")
+            print("Sheet created\n")
+    
 class DiceRoller:
     def __init__(self):
         self.dice_types = {
@@ -65,11 +78,17 @@ class CommandInterface(cmd.Cmd):
     def do_SheetExplain(self, line):
         """Explains sheets text file lines"""
         print("1. Name\n2. Class\n3. Stats\n4. Health\n5. inventory\n6. Abilities\n7. History")
-
+    
+    def do_CreateSheet(self, line):
+        """Creates a new sheet"""
+        newSheetName = input("Enter file name: ")
+        SheetEditor.create_sheet(newSheetName)
+        self.sheetName = newSheetName
+        
     def do_ImportSheet(self, line):
         """Imports an existing sheet"""
         importedSheetName = input("Enter file name: ")
-        SheetImporter.import_sheet(importedSheetName)
+        SheetEditor.import_sheet(importedSheetName)
         self.sheetName = importedSheetName
     
     def do_SheetName(self, line):
