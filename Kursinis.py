@@ -1,12 +1,10 @@
-#komandu list'as "/help" +
-#importuot egzistuojanti sheeta + 
-#sukurt nauja sheet'a
 #sheeta editint
 #pakeist health skaiciu
 #inventorius
-#ability list
+#sudaryt ability  ir equipment list'as, jiems priskirt aprasyma ir atributus
 #edit statistics
-#dice roller +
+#su chatgpt pabaig editoriu (reikm kad checkintu ar teisinga info ivedi (heatlh ir stats), vietoj "line x" kad rasytu kokia data keiti)
+
 
 #cmd puslapis
 #https://medium.com/@noransaber685/simple-guide-to-creating-a-command-line-interface-cli-in-python-c2de7b8f5e05
@@ -18,7 +16,7 @@ class SheetEditor:
     
     @staticmethod
     def import_sheet(importedSheetName):
-        print(f"Importing:, {importedSheetName}\n")
+        print(f"Importing: {importedSheetName}\n")
         try:
             with open(importedSheetName, 'r') as file:
                 for line in file:
@@ -31,20 +29,106 @@ class SheetEditor:
     
     def create_sheet(newSheetName):
         print(f"Creating: {newSheetName}\n")
+        print("Let's put in some data\n")
+        name = input("Enter Name: ")
+        class_name = input("Enter Class: ")
+
+        while True:
+            stats = input("Enter Statistics (STR DEX CON INT WIS CHA, separated by space): ").split()
+            
+            if len(stats) != 6:
+                print("Error: Please enter exactly 6 statistics.")
+            else:
+                if all(stat.strip().isdigit() for stat in stats):
+                    break
+                else:
+                    print("Error: Statistics should be numeric.")
+    
+        while True:
+            health = input("Enter Health: ")
+            if health.isdigit():
+                break
+            else:
+                print("Error: Health should be a number.")
+    
         with open(newSheetName, 'w') as file:
-            print("Let's put in some data\n")
-            file.write(input("Enter Name: \n") + "\n")
-            file.write(input("Enter Class: \n") + "\n")
-            file.write(input("Enter Statistics (STR, DEX, CON, INT, WIS, CHA): \n") + "\n")
-            file.write(input("Enter Health: \n") + "\n")
-            file.write(input("Enter Inventory content: \n") + "\n")
-            file.write(input("Enter Abilities: \n") + "\n")
-            file.write(input("Enter History: \n") + "\n")
+            file.write(name + "\n")
+            file.write(class_name + "\n")
+            file.write(' '.join(stats) + "\n")
+            file.write(health + "\n")
+            file.write(input("Enter Inventory content: ") + "\n")
+            file.write(input("Enter Abilities: ") + "\n")
+            file.write(input("Enter History: ") + "\n")
             print("Sheet created")
+
 
     def edit_sheet(sheetName):
         print(f"Editing {sheetName}")
-        
+        try:
+            with open(sheetName, 'r') as file:
+                data = file.readlines()
+                print("Current data:")
+                print("1. Name:", data[0].strip())
+                print("2. Class:", data[1].strip())
+                print("3. Statistics:", data[2].strip())
+                print("4. Health:", data[3].strip())
+                print("5. Inventory content:", data[4].strip())
+                print("6. Abilities:", data[5].strip())
+                print("7. History:", data[6].strip())
+            
+            while True:
+                choice = input("Enter the number corresponding to what you want to edit or 'quit' to exit: ")
+                if choice.lower() == 'quit':
+                    print("Exiting editor.")
+                    break
+                
+                line_num = int(choice)
+                if line_num < 1 or line_num > 7:
+                    print("Error: Invalid option number.")
+                    continue
+                
+                if line_num == 1:
+                    new_value = input("Enter new Name: ")
+                elif line_num == 2:
+                    new_value = input("Enter new Class: ")
+                elif line_num == 3:
+                    while True:
+                        new_value = input("Enter new Statistics (STR DEX CON INT WIS CHA, separated by space): ")
+                        stats = new_value.split()
+                        
+                        if len(stats) != 6:
+                            print("Error: Please enter exactly 6 statistics.")
+                        else:
+                            if all(stat.strip().isdigit() for stat in stats):
+                                new_value = ' '.join(stats)
+                                break
+                            else:
+                                print("Error: Statistics should be numeric.")
+                elif line_num == 4:
+                    new_value = input("Enter new Health: ")
+                    while not new_value.isdigit():
+                        print("Error: Health should be a number.")
+                        new_value = input("Enter new Health: ")
+                elif line_num == 5:
+                    new_value = input("Enter new Inventory content: ")
+                elif line_num == 6:
+                    new_value = input("Enter new Abilities: ")
+                elif line_num == 7:
+                    new_value = input("Enter new History: ")
+                else:
+                    print("Error: Invalid option number.")
+                    continue
+            
+                data[line_num - 1] = new_value + "\n"
+                
+                with open(sheetName, 'w') as file:
+                    file.writelines(data)
+                
+                print("Sheet updated successfully.")
+            
+        except FileNotFoundError:
+            print("Sheet not found.")
+
 class DiceRoller:
     def __init__(self):
         self.dice_types = {
