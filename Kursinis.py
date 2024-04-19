@@ -32,16 +32,19 @@ class SheetEditor:
     def create_sheet(newSheetName):
         print(f"Creating: {newSheetName}\n")
         with open(newSheetName, 'w') as file:
-            print("Let's put in some date\n")
+            print("Let's put in some data\n")
             file.write(input("Enter Name: \n") + "\n")
             file.write(input("Enter Class: \n") + "\n")
-            file.write(input("Enter Statistics: \n") + "\n")
+            file.write(input("Enter Statistics (STR, DEX, CON, INT, WIS, CHA): \n") + "\n")
             file.write(input("Enter Health: \n") + "\n")
             file.write(input("Enter Inventory content: \n") + "\n")
             file.write(input("Enter Abilities: \n") + "\n")
             file.write(input("Enter History: \n") + "\n")
-            print("Sheet created\n")
-    
+            print("Sheet created")
+
+    def edit_sheet(sheetName):
+        print(f"Editing {sheetName}")
+        
 class DiceRoller:
     def __init__(self):
         self.dice_types = {
@@ -73,7 +76,7 @@ class CommandInterface(cmd.Cmd):
     
     def __init__(self):
         super().__init__()
-        self.sheetName = 'No imported Sheet'
+        self.sheetName = ''
         
     def do_SheetExplain(self, line):
         """Explains sheets text file lines"""
@@ -91,9 +94,19 @@ class CommandInterface(cmd.Cmd):
         SheetEditor.import_sheet(importedSheetName)
         self.sheetName = importedSheetName
     
+    def do_EditSheet(self, line):
+        """Edit an imported/created sheet"""
+        if self.sheetName == '':
+            print("No imported/created sheet. Create a sheet with command 'CreateSheet' or import one using 'ImportSheet'")
+        else:
+            SheetEditor.edit_sheet(self.sheetName)
+
+
     def do_SheetName(self, line):
         """Displays sheet name"""
-        print(self.sheetName)
+        if self.sheetName == '':
+            print("No imported/created sheet. Create a sheet with command 'CreateSheet' or import one using 'ImportSheet'")
+        else: print(self.sheetName)
     
     def do_RollDice(self, line):
         """Roll a dice of your choice"""
