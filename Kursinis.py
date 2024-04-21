@@ -1,10 +1,7 @@
-#sheeta editint
-#pakeist health skaiciu
+
 #inventorius
 #sudaryt ability  ir equipment list'as, jiems priskirt aprasyma ir atributus
-#edit statistics
-#su chatgpt pabaig editoriu (reikm kad checkintu ar teisinga info ivedi (heatlh ir stats), vietoj "line x" kad rasytu kokia data keiti)
-
+#invetoriaus daiktam ir abilities priskirt kodus, kurie bus kazkam lygus, pvz #123 = sword
 
 #cmd puslapis
 #https://medium.com/@noransaber685/simple-guide-to-creating-a-command-line-interface-cli-in-python-c2de7b8f5e05
@@ -184,7 +181,6 @@ class CommandInterface(cmd.Cmd):
             print("No imported/created sheet. Create a sheet with command 'CreateSheet' or import one using 'ImportSheet'")
         else:
             SheetEditor.edit_sheet(self.sheetName)
-
 
     def do_SheetName(self, line):
         """Displays sheet name"""
