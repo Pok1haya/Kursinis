@@ -10,121 +10,105 @@ import cmd
 import random
 
 class SheetEditor:
-    
     @staticmethod
-    def import_sheet(importedSheetName):
-        print(f"Importing: {importedSheetName}\n")
+    def import_sheet(imported_sheet_name):
+        """Imports a sheet from a file."""
+        print(f"Importing: {imported_sheet_name}\n")
         try:
-            with open(importedSheetName, 'r') as file:
+            with open(imported_sheet_name, 'r') as file:
                 for line in file:
                     print(line.strip())
-                
         except FileNotFoundError:
             print("File not found.")
         except Exception as e:
             print("An error occurred:", e)
-    
-    def create_sheet(newSheetName):
-        print(f"Creating: {newSheetName}\n")
+
+    @staticmethod
+    def create_sheet(new_sheet_name):
+        """Creates a new sheet."""
+        print(f"Creating: {new_sheet_name}\n")
         print("Let's put in some data\n")
         name = input("Enter Name: ")
         class_name = input("Enter Class: ")
+        stats = SheetEditor._input_stats()
+        health = SheetEditor._input_health()
+        inventory = input("Enter Inventory content: ")
+        abilities = input("Enter Abilities: ")
+        history = input("Enter History: ")
 
+        with open(new_sheet_name, 'w') as file:
+            file.write(f"{name}\n{class_name}\n{' '.join(stats)}\n{health}\n{inventory}\n{abilities}\n{history}\n")
+        print("Sheet created")
+
+    @staticmethod
+    def _input_stats():
+        """Inputs statistics for the character."""
         while True:
             stats = input("Enter Statistics (STR DEX CON INT WIS CHA, separated by space): ").split()
-            
             if len(stats) != 6:
                 print("Error: Please enter exactly 6 statistics.")
+            elif not all(stat.strip().isdigit() for stat in stats):
+                print("Error: Statistics should be numeric.")
             else:
-                if all(stat.strip().isdigit() for stat in stats):
-                    break
-                else:
-                    print("Error: Statistics should be numeric.")
-    
+                return stats
+
+    @staticmethod
+    def _input_health():
+        """Inputs health for the character."""
         while True:
             health = input("Enter Health: ")
             if health.isdigit():
-                break
+                return health
             else:
                 print("Error: Health should be a number.")
-    
-        with open(newSheetName, 'w') as file:
-            file.write(name + "\n")
-            file.write(class_name + "\n")
-            file.write(' '.join(stats) + "\n")
-            file.write(health + "\n")
-            file.write(input("Enter Inventory content: ") + "\n")
-            file.write(input("Enter Abilities: ") + "\n")
-            file.write(input("Enter History: ") + "\n")
-            print("Sheet created")
 
-
-    def edit_sheet(sheetName):
-        print(f"Editing {sheetName}")
+    @staticmethod
+    def edit_sheet(sheet_name):
+        """Edits an existing sheet."""
+        print(f"Editing {sheet_name}")
         try:
-            with open(sheetName, 'r') as file:
+            with open(sheet_name, 'r') as file:
                 data = file.readlines()
-                print("Current data:")
-                print("1. Name:", data[0].strip())
-                print("2. Class:", data[1].strip())
-                print("3. Statistics:", data[2].strip())
-                print("4. Health:", data[3].strip())
-                print("5. Inventory content:", data[4].strip())
-                print("6. Abilities:", data[5].strip())
-                print("7. History:", data[6].strip())
-            
+                SheetEditor._display_current_data(data)
+
             while True:
                 choice = input("Enter the number corresponding to what you want to edit or 'quit' to exit: ")
                 if choice.lower() == 'quit':
                     print("Exiting editor.")
                     break
-                
+
                 line_num = int(choice)
                 if line_num < 1 or line_num > 7:
                     print("Error: Invalid option number.")
                     continue
-                
-                if line_num == 1:
-                    new_value = input("Enter new Name: ")
-                elif line_num == 2:
-                    new_value = input("Enter new Class: ")
-                elif line_num == 3:
-                    while True:
-                        new_value = input("Enter new Statistics (STR DEX CON INT WIS CHA, separated by space): ")
-                        stats = new_value.split()
-                        
-                        if len(stats) != 6:
-                            print("Error: Please enter exactly 6 statistics.")
-                        else:
-                            if all(stat.strip().isdigit() for stat in stats):
-                                new_value = ' '.join(stats)
-                                break
-                            else:
-                                print("Error: Statistics should be numeric.")
-                elif line_num == 4:
-                    new_value = input("Enter new Health: ")
-                    while not new_value.isdigit():
-                        print("Error: Health should be a number.")
-                        new_value = input("Enter new Health: ")
-                elif line_num == 5:
-                    new_value = input("Enter new Inventory content: ")
-                elif line_num == 6:
-                    new_value = input("Enter new Abilities: ")
-                elif line_num == 7:
-                    new_value = input("Enter new History: ")
-                else:
-                    print("Error: Invalid option number.")
-                    continue
-            
-                data[line_num - 1] = new_value + "\n"
-                
-                with open(sheetName, 'w') as file:
+
+                new_value = SheetEditor._get_new_value(line_num)
+                data[line_num - 1] = f"{new_value}\n"
+                with open(sheet_name, 'w') as file:
                     file.writelines(data)
-                
+
                 print("Sheet updated successfully.")
-            
+
         except FileNotFoundError:
             print("Sheet not found.")
+
+    @staticmethod
+    def _display_current_data(data):
+        """Displays current data of the sheet."""
+        print("Current data:")
+        labels = ["Name", "Class", "Statistics", "Health", "Inventory content", "Abilities", "History"]
+        for i, label in enumerate(labels):
+            print(f"{i + 1}. {label}: {data[i].strip()}")
+
+    @staticmethod
+    def _get_new_value(line_num):
+        """Gets new value for the specified line number."""
+        if line_num in [1, 2, 5, 6, 7]:  # Check if line_num corresponds to editable fields
+            return input(f"Enter new {['Name', 'Class', 'Statistics', 'Health', 'Inventory content', 'Abilities', 'History'][line_num - 1]}: ")
+        elif line_num == 3:
+            return ' '.join(SheetEditor._input_stats())
+        elif line_num == 4:
+            return SheetEditor._input_health()
 
 class DiceRoller:
     def __init__(self):
@@ -135,59 +119,59 @@ class DiceRoller:
             'd10': 10,
             'd12': 12,
             'd20': 20,
-            'd100': 10
+            'd100': 100
         }
 
     def roll_dice(self, dice_type):
         if dice_type.lower() in self.dice_types:
             max_value = self.dice_types[dice_type.lower()]
             if dice_type.lower() == 'd100':
-                result = random.randint(0, 10) * 10 
+                result = random.randint(0, 10) * 10
             else:
                 result = random.randint(1, max_value)
             print(f"Rolling {dice_type}: {result}\n")
         else:
             print("Invalid dice type. Choose from d4, d6, d8, d10, d12, d20, or d100.\n")
-    
-  
-    
+
+
 class CommandInterface(cmd.Cmd):
     prompt = '> '
     intro = 'Welcome to DND helper. Type "help" for available commands.'
-    
+
     def __init__(self):
         super().__init__()
-        self.sheetName = ''
-        
+        self.sheet_name = ''
+
     def do_SheetExplain(self, line):
         """Explains sheets text file lines"""
         print("1. Name\n2. Class\n3. Stats\n4. Health\n5. inventory\n6. Abilities\n7. History")
-    
+
     def do_CreateSheet(self, line):
         """Creates a new sheet"""
-        newSheetName = input("Enter file name: ")
-        SheetEditor.create_sheet(newSheetName)
-        self.sheetName = newSheetName
-        
+        new_sheet_name = input("Enter file name: ")
+        SheetEditor.create_sheet(new_sheet_name)
+        self.sheet_name = new_sheet_name
+
     def do_ImportSheet(self, line):
         """Imports an existing sheet"""
-        importedSheetName = input("Enter file name: ")
-        SheetEditor.import_sheet(importedSheetName)
-        self.sheetName = importedSheetName
-    
+        imported_sheet_name = input("Enter file name: ")
+        SheetEditor.import_sheet(imported_sheet_name)
+        self.sheet_name = imported_sheet_name
+
     def do_EditSheet(self, line):
         """Edit an imported/created sheet"""
-        if self.sheetName == '':
+        if self.sheet_name == '':
             print("No imported/created sheet. Create a sheet with command 'CreateSheet' or import one using 'ImportSheet'")
         else:
-            SheetEditor.edit_sheet(self.sheetName)
+            SheetEditor.edit_sheet(self.sheet_name)
 
     def do_SheetName(self, line):
         """Displays sheet name"""
-        if self.sheetName == '':
+        if self.sheet_name == '':
             print("No imported/created sheet. Create a sheet with command 'CreateSheet' or import one using 'ImportSheet'")
-        else: print(self.sheetName)
-    
+        else:
+            print(self.sheet_name)
+
     def do_RollDice(self, line):
         """Roll a dice of your choice"""
         roller = DiceRoller()
@@ -196,14 +180,14 @@ class CommandInterface(cmd.Cmd):
             if dice_input.lower() == 'exit':
                 break
             roller.roll_dice(dice_input)
-    
+
     def do_Quit(self, line):
         """Exits DND helper"""
         return True
-    
+
     def postcmd(self, stop, line):
-        print()  
+        print()
         return stop
-    
+
 if __name__ == '__main__':
     CommandInterface().cmdloop()
