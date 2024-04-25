@@ -77,17 +77,18 @@ class SheetEditor:
                     print("Exiting editor.")
                     break
 
-                line_num = int(choice)
-                if line_num < 1 or line_num > 7:
-                    print("Error: Invalid option number.")
-                    continue
-
-                new_value = SheetEditor._get_new_value(line_num)
-                data[line_num - 1] = f"{new_value}\n"
-                with open(sheet_name, 'w') as file:
-                    file.writelines(data)
-
-                print("Sheet updated successfully.")
+                if choice.isdigit():
+                    line_num = int(choice)
+                    if 1 <= line_num <= 7:
+                        new_value = SheetEditor._get_new_value(line_num)
+                        data[line_num - 1] = f"{new_value}\n"
+                        with open(sheet_name, 'w') as file:
+                            file.writelines(data)
+                        print("Sheet updated successfully.")
+                    else:
+                        print("Error: Option number must be between 1 and 7.")
+                else:
+                    print("Error: Invalid input. Please enter a number.")
 
         except FileNotFoundError:
             print("Sheet not found.")
@@ -103,7 +104,7 @@ class SheetEditor:
     @staticmethod
     def _get_new_value(line_num):
         """Gets new value for the specified line number."""
-        if line_num in [1, 2, 5, 6, 7]:  # Check if line_num corresponds to editable fields
+        if line_num in [1, 2, 5, 6, 7]: 
             return input(f"Enter new {['Name', 'Class', 'Statistics', 'Health', 'Inventory content', 'Abilities', 'History'][line_num - 1]}: ")
         elif line_num == 3:
             return ' '.join(SheetEditor._input_stats())
