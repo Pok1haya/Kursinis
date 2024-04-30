@@ -17,19 +17,19 @@ Also included are checks for if entered health is a number and if entered statis
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/input_.png)
 
-2\. Using command “ImportSheet” allows you to import an already created sheet in to your program. Interfrace guides you thru the steps of importing your sheet. (Sheet should be placed in the same folder as the program. “.txt” must be added for it to work, for example: Sheet.txt)
+2\. Using command “ImportSheet” allows you to import an already created sheet in to your program. Interfrace guides you thru the steps of importing your sheet. (Sheet should be placed in the same folder as the program. “.txt” must be added for it to work, for example: Sheet.txt):
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/ImportSheet.png)
 
-3\. Command “EditSheet” allows you to edit the current imported or created sheet. It allows you to edit your sheet by allowing you to type in new information. Also includes same health and stat checks to prevent errors.
+3\. Command “EditSheet” allows you to edit the current imported or created sheet. It allows you to edit your sheet by allowing you to type in new information. Also includes same health and stat checks to prevent errors:
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/EditSheet.png)
 
-4\. Command “RollDice”allows you to roll between a selection of dnd dices
+4\. Command “RollDice”allows you to roll between a selection of dnd dices:
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/RollDIce.png)
 
-These are the main functions of the program
+These are the main functions of the program:
 
 ## Patterns used:
 
@@ -65,7 +65,7 @@ The classes and methods provide abstractions over complex functionalities. For e
 
 **File reading and writing:**
 
-Writing is used for creating a sheet using the command “CreateSheet”.
+Writing is used for creating a sheet using the command “CreateSheet”:
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/CreateSheet.png)
 
