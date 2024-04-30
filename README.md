@@ -4,7 +4,7 @@
 - Runs by opening .py file on cmd or running the file in an editing program (visual studio code, etc.)
 - Interact with the program using implemented commands. To see list of commands, type “help”, or “help (specific command)” to get a description of what the program does.
 
-Program cover a few key DnD’s functions:
+## Program cover a few key DnD’s functions:
 
 - Creating, importing and/or editing basic character sheet
 - Dice roller
@@ -31,13 +31,13 @@ Also included are checks for if entered health is a number and if entered statis
 
 These are the main functions of the program
 
-**Patterns used:**
+## Patterns used:
 
 1. **Command Pattern -** The CommandInterface class uses the Command Pattern. Each method in this class represents a command that can be executed by the user. These commands (“CreateSheet”, etc.) are invoked by the user through the command-line interface. Each command encapsulates a particular action, and they are invoked dynamically based on user input.
 2. **Static Method Pattern**: The SheetEditor class mostly uses static methods for operations like importing a sheet, creating a new sheet, editing a sheet, etc. These methods are stateless and can be called without instantiating the class. This pattern is useful when methods don't rely on instance variables.
 3. **Factory Method Pattern**: the DiceRoller class uses Factory Method Pattern. It contains a method roll_dice which generates random numbers based on the input dice type. It could be extended to include more dice types easily.
 
-**4 OOP pillars:**
+## 4 OOP pillars:
 
 1\. **Encapsulation**: Encapsulation is the bundling of data (variables) and methods (functions) that operate on the data into a single unit or class. It hides the internal state of an object and only exposes the necessary functionalities.
 
@@ -73,7 +73,7 @@ Writing and reading is used in the edit_sheet method for editing a already creat
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/EditSheet.png)
 
-**Results and Conclusions:**
+## Results and Conclusions:
 
 - The result is a rudimentary DnD helper programs that allows the user to easily manage his sheet, roll different dice without the need for physical dice.
 - Of course this is a very bare-bones program. A program for the whole game would require a lot more time and skill, taking in to account how much content the actual DnD sheet holds.
