@@ -1,4 +1,4 @@
-#DnD Helper#
+# DnD Helper
 
 - A simple DnD helper program demo. This program makes dnd a bit more manageable by simplifying a few aspects and having useful features.
 - Runs by opening .py file on cmd or running the file in an editing program (visual studio code, etc.)
