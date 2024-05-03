@@ -248,5 +248,5 @@ Writing and reading is used in the edit_sheet method for editing a already creat
 - The result is a rudimentary DnD helper programs that allows the user to easily manage his sheet, roll different dice without the need for physical dice.
 - Of course this is a very bare-bones program. A program for the whole game would require a lot more time and skill, taking in to account how much content the actual DnD sheet holds.
 - In the future the program could easily be expanded to have more functions by adding more commands.
-- For a full sheet it would require a larger and more complex file reader.
+- For a full sheet (https://media.wizards.com/2022/dnd/downloads/DnD_5E_CharacterSheet_FormFillable.pdf) it would require a larger and more complex file reader.
 - An front-end interface would make the program a lot more appealing
