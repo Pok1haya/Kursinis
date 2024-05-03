@@ -13,7 +13,7 @@
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/CreateSheet.png)
 
-Also included are checks for if entered health is a number and if entered statistics consist of 6 digits for each stat:
+Also included are checks for if entered health is a number and if entered statistics consist of a digit for each of its 6 stat:
 
 ![](https://github.com/Pok1haya/Kursinis/blob/main/input_.png)
 
