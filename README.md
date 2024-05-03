@@ -11,7 +11,28 @@
 
 1\. Create a sheet using command “CreateSheet” which lets you put in data 1 line at a time prompting you with what information to put in:
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/CreateSheet.png)
+``` @staticmethod
+    def _input_stats():
+        """Inputs statistics for the character."""
+        while True:
+            stats = input("Enter Statistics (STR DEX CON INT WIS CHA, separated by space): ").split()
+            if len(stats) != 6:
+                print("Error: Please enter exactly 6 statistics.")
+            elif not all(stat.strip().isdigit() for stat in stats):
+                print("Error: Statistics should be numeric.")
+            else:
+                return stats
+
+    @staticmethod
+    def _input_health():
+        """Inputs health for the character."""
+        while True:
+            health = input("Enter Health: ")
+            if health.isdigit():
+                return health
+            else:
+                print("Error: Health should be a number.")
+```
 
 Also included are checks for if entered health is a number and if entered statistics consist of a digit for each of its 6 stat:
 
