@@ -11,7 +11,29 @@
 
 1\. Create a sheet using command “CreateSheet” which lets you put in data 1 line at a time prompting you with what information to put in:
 
-``` @staticmethod
+```
+    @staticmethod
+    def create_sheet(new_sheet_name):
+        """Creates a new sheet."""
+        print(f"Creating: {new_sheet_name}\n")
+        print("Let's put in some data\n")
+        name = input("Enter Name: ")
+        class_name = input("Enter Class: ")
+        stats = SheetEditor._input_stats()
+        health = SheetEditor._input_health()
+        inventory = input("Enter Inventory content: ")
+        abilities = input("Enter Abilities: ")
+        history = input("Enter History: ")
+
+        with open(new_sheet_name, 'w') as file:
+            file.write(f"{name}\n{class_name}\n{' '.join(stats)}\n{health}\n{inventory}\n{abilities}\n{history}\n")
+        print("Sheet created")
+```
+
+Also included are checks for if entered health is a number and if entered statistics consist of a digit for each of its 6 stat:
+
+```
+    @staticmethod
     def _input_stats():
         """Inputs statistics for the character."""
         while True:
@@ -34,23 +56,104 @@
                 print("Error: Health should be a number.")
 ```
 
-Also included are checks for if entered health is a number and if entered statistics consist of a digit for each of its 6 stat:
-
-![](https://github.com/Pok1haya/Kursinis/blob/main/input_.png)
-
 2\. Using command “ImportSheet” allows you to import an already created sheet in to your program. Interfrace guides you thru the steps of importing your sheet. (Sheet should be placed in the same folder as the program. “.txt” must be added for it to work, for example: Sheet.txt):
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/ImportSheet.png)
+```
+    @staticmethod
+    def import_sheet(imported_sheet_name):
+        """Imports a sheet from a file."""
+        print(f"Importing: {imported_sheet_name}\n")
+        try:
+            with open(imported_sheet_name, 'r') as file:
+                for line in file:
+                    print(line.strip())
+        except FileNotFoundError:
+            print("File not found.")
+        except Exception as e:
+            print("An error occurred:", e)
+```
 
 3\. Command “EditSheet” allows you to edit the current imported or created sheet. It allows you to edit your sheet by allowing you to type in new information. Also includes same health and stat checks to prevent errors:
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/EditSheet.png)
+```
+    @staticmethod
+    def edit_sheet(sheet_name):
+        """Edits an existing sheet."""
+        print(f"Editing {sheet_name}")
+        try:
+            with open(sheet_name, 'r') as file:
+                data = file.readlines()
+                SheetEditor._display_current_data(data)
+
+            while True:
+                choice = input("Enter the number corresponding to what you want to edit or 'quit' to exit: ")
+                if choice.lower() == 'quit':
+                    print("Exiting editor.")
+                    break
+
+                if choice.isdigit():
+                    line_num = int(choice)
+                    if 1 <= line_num <= 7:
+                        new_value = SheetEditor._get_new_value(line_num)
+                        data[line_num - 1] = f"{new_value}\n"
+                        with open(sheet_name, 'w') as file:
+                            file.writelines(data)
+                        print("Sheet updated successfully.")
+                    else:
+                        print("Error: Option number must be between 1 and 7.")
+                else:
+                    print("Error: Invalid input. Please enter a number.")
+
+        except FileNotFoundError:
+            print("Sheet not found.")
+
+    @staticmethod
+    def _display_current_data(data):
+        """Displays current data of the sheet."""
+        print("Current data:")
+        labels = ["Name", "Class", "Statistics", "Health", "Inventory content", "Abilities", "History"]
+        for i, label in enumerate(labels):
+            print(f"{i + 1}. {label}: {data[i].strip()}")
+
+    @staticmethod
+    def _get_new_value(line_num):
+        """Gets new value for the specified line number."""
+        if line_num in [1, 2, 5, 6, 7]: 
+            return input(f"Enter new {['Name', 'Class', 'Statistics', 'Health', 'Inventory content', 'Abilities', 'History'][line_num - 1]}: ")
+        elif line_num == 3:
+            return ' '.join(SheetEditor._input_stats())
+        elif line_num == 4:
+            return SheetEditor._input_health()
+```
 
 4\. Command “RollDice”allows you to roll between a selection of dnd dices:
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/RollDIce.png)
+```
+class DiceRoller:
+    def __init__(self):
+        self.dice_types = {
+            'd4': 4,
+            'd6': 6,
+            'd8': 8,
+            'd10': 10,
+            'd12': 12,
+            'd20': 20,
+            'd100': 100
+        }
+
+    def roll_dice(self, dice_type):
+        if dice_type.lower() in self.dice_types:
+            max_value = self.dice_types[dice_type.lower()]
+            if dice_type.lower() == 'd100':
+                result = random.randint(0, 10) * 10
+            else:
+                result = random.randint(1, max_value)
+            print(f"Rolling {dice_type}: {result}\n")
+        else:
+            print("Invalid dice type. Choose from d4, d6, d8, d10, d12, d20, or d100.\n")
 
 These are the main functions of the program:
+```
 
 ## Patterns used:
 
@@ -88,12 +191,58 @@ The classes and methods provide abstractions over complex functionalities. For e
 
 Writing is used for creating a sheet using the command “CreateSheet”:
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/CreateSheet.png)
+```
+    @staticmethod
+    def create_sheet(new_sheet_name):
+        """Creates a new sheet."""
+        print(f"Creating: {new_sheet_name}\n")
+        print("Let's put in some data\n")
+        name = input("Enter Name: ")
+        class_name = input("Enter Class: ")
+        stats = SheetEditor._input_stats()
+        health = SheetEditor._input_health()
+        inventory = input("Enter Inventory content: ")
+        abilities = input("Enter Abilities: ")
+        history = input("Enter History: ")
+
+        with open(new_sheet_name, 'w') as file:
+            file.write(f"{name}\n{class_name}\n{' '.join(stats)}\n{health}\n{inventory}\n{abilities}\n{history}\n")
+        print("Sheet created")
+```
 
 Writing and reading is used in the edit_sheet method for editing a already created/imported sheet:
 
-![](https://github.com/Pok1haya/Kursinis/blob/main/EditSheet.png)
+```
+    def edit_sheet(sheet_name):
+        """Edits an existing sheet."""
+        print(f"Editing {sheet_name}")
+        try:
+            with open(sheet_name, 'r') as file:
+                data = file.readlines()
+                SheetEditor._display_current_data(data)
 
+            while True:
+                choice = input("Enter the number corresponding to what you want to edit or 'quit' to exit: ")
+                if choice.lower() == 'quit':
+                    print("Exiting editor.")
+                    break
+
+                if choice.isdigit():
+                    line_num = int(choice)
+                    if 1 <= line_num <= 7:
+                        new_value = SheetEditor._get_new_value(line_num)
+                        data[line_num - 1] = f"{new_value}\n"
+                        with open(sheet_name, 'w') as file:
+                            file.writelines(data)
+                        print("Sheet updated successfully.")
+                    else:
+                        print("Error: Option number must be between 1 and 7.")
+                else:
+                    print("Error: Invalid input. Please enter a number.")
+
+        except FileNotFoundError:
+            print("Sheet not found.")
+```
 ## Results and Conclusions:
 
 - The result is a rudimentary DnD helper programs that allows the user to easily manage his sheet, roll different dice without the need for physical dice.
